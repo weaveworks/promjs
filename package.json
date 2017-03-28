@@ -1,15 +1,18 @@
 {
   "name": "promjs",
-  "version": "1.0.0",
+  "version": "0.2.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "lint": "eslint src test"
+    "lint": "eslint src test",
+    "build": "babel src --out-dir lib && cp package.json ./lib",
+    "release": "yarn lint && yarn test && yarn version && yarn publish lib/package.json"
   },
   "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "devDependencies": {
+    "babel-cli": "^6.24.0",
     "babel-eslint": "^7.2.1",
     "babel-plugin-lodash": "^3.2.11",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
