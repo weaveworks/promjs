@@ -1,13 +1,13 @@
 {
   "name": "promjs",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
     "lint": "eslint src test",
     "build": "babel src --out-dir lib && cp package.json ./lib",
-    "release": "yarn lint && yarn test && yarn version && git push --set-upstream origin master --follow-tags && yarn publish lib/package.json"
+    "release": "yarn lint && yarn test && yarn version && yarn publish lib/package.json --new-version $npm_package_version && git push --set-upstream origin master --follow-tags"
   },
   "author": "",
   "license": "Apache-2.0",
