@@ -1,0 +1,30 @@
+{
+  "extends": "eslint:recommended",
+  "plugins": ["import"],
+  "parser": "babel-eslint",
+  "env": {
+    "es6": true,
+    "mocha": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+  },
+  "rules": {
+    "semi": 2,
+    "comma-dangle": 0,
+    "global-require": 0,
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true,
+        "optionalDependencies": true,
+        "peerDependencies": true
+      }
+    ],
+    "import/prefer-default-export": 0,
+    "no-param-reassign": 0,
+    "no-restricted-properties": 0,
+    "object-curly-spacing": ["error", "always"]
+  }
+}
