@@ -85,10 +85,4 @@ export default class Registry {
     const metric = find(valuesIn(this.data), v => has(v, name));
     return metric ? metric[name].instance : null;
   }
-
-  render(type, name, help, value, labels) {
-    const metric = this.create(type, name, help);
-    metric.set(value, labels);
-    return this.metrics();
-  }
 }

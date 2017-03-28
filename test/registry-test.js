@@ -34,17 +34,6 @@ describe('Registry', function () {
     counter.inc();
     reg.metrics().should.containEql('my_counter 1');
   });
-  it('renders a one-off metric', () => {
-    let desired = '# HELP oneoff_counter A single metric\n';
-    desired += '# TYPE oneoff_counter counter\n';
-    desired += 'oneoff_counter 0\n';
-    desired += 'oneoff_counter{path="some/path"} 1\n';
-
-    const metric = new Registry().render('counter', 'oneoff_counter', 'A single metric', 1, {
-      path: 'some/path'
-    });
-    metric.should.equal(desired);
-  });
   it('gets a metric by name', () => {
     const metric = reg.get('my_counter');
     metric.should.be.an.Object();

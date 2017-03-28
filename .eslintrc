@@ -3,6 +3,7 @@
   "plugins": ["import"],
   "parser": "babel-eslint",
   "env": {
+    "node" : true,
     "es6": true,
     "mocha": true
   },

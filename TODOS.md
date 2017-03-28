@@ -11,4 +11,4 @@
 * Should probably use immutable data
 * `.set()` is exposed to the public API on all metric types. It doesn't show up in enumerable props, but its in the prototype. That will be a footgun for users, even if its not documented.
 * This would be a good candidate to try out `Flow` on
-* `registry.render()` bypasses metric validation checks (its a direct 'set')
+* ~~`registry.render()` bypasses metric validation checks (its a direct 'set')~~
