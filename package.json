@@ -7,7 +7,7 @@
     "test": "mocha",
     "lint": "eslint src test",
     "build": "babel src --out-dir lib && cp package.json ./lib",
-    "release": "yarn lint && yarn test && yarn version && yarn publish --new-version $npm_package_version lib/package.json && git push --set-upstream origin master --follow-tags"
+    "release": "yarn lint && yarn test && yarn version && yarn publish --tag $npm_package_version lib/package.json && git push --set-upstream origin master --follow-tags"
   },
   "author": "",
   "license": "Apache-2.0",
