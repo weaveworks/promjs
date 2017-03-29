@@ -22,4 +22,5 @@ export function resetAll() {
   each(this.data, (d) => {
     this.reset(omit(d, 'value'));
   });
+  return this;
 }

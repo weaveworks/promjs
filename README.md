@@ -1,0 +1,174 @@
+## promjs
+
+A Prometheus metrics registry implemented in JavaScript
+
+### Goals
+* Stick to [Prometheus client best practices](https://prometheus.io/docs/instrumenting/writing_clientlibs/) as closely as possible
+* Run in Node.js or the browser
+* Fit into the modern JavaScript ecosystem
+* Minimally rely on third-party dependencies
+
+### Installation
+Install via `npm`:
+
+`$ npm install --save promjs`
+
+or via `yarn`:
+
+`$ yarn add promjs`
+
+
+### Usage
+```javascript
+// Using es6 imports
+import prom from 'promjs';
+// Using CommonJS
+const prom = require('promjs');
+
+const registry = prom();
+const pageRequestCounter = registry.create('counter', 'page_requests', 'A counter for page requests');
+
+pageRequestCounter.inc();
+console.log(registry.metrics());
+// =>
+// # HELP page_requests A counter for page requests \n
+// # TYPE page_requests counter
+// page_requests 1 \n
+```
+
+
+### API
+#### prom()
+Returns a registry class.
+
+
+### Registry
+#### registry.create(type, name, help) => collector (*counter | gauge | histogram*)
+Returns a metric class of the specified type. The metric is already registered with the registry that creates it.
+
+Arguments
+1. `type` (*String*): The type of metric to create. The current supported types are `counter`, `gauge`, and `historgram`.
+2. `name` (*String*): The name of the metric
+3. `help` (*String*): The help message for the metric
+
+Example
+```javascript
+import prom from 'promjs';
+
+const registry = prom();
+const counter = registry.create('counter', 'my_counter', 'A counter for things');
+```
+
+#### registry.metrics() => string
+Returns a prometheus formatted string containing all existing metrics.
+```javascript
+const counter = registry.create('counter', 'my_counter', 'A counter for things');
+counter.inc();
+console.log(registry.metrics());
+// =>
+// # HELP my_counter A counter for things \n
+// # TYPE my_counter counter
+// my_counter 1 \n
+```
+
+#### registry.clear() => self
+Resets all existing metrics to 0. This can be used to reset metrics after reporting to a prometheus aggregator. Returns itself to allow for chaining.
+
+
+#### registry.get(name) =>  collector (*counter | gauge | histogram*) | null
+Fetches an existing metric by name. Returns null if no metrics are found
+
+
+### Collector
+All of the metric classes (Counter, Gauge, Histogram) inherit from the Collector class. Collector methods are available on each of the metic classes.
+
+Labels are plain JS objects that will be converted to prometheus formatted strings. For example:
+
+#### collector.reset([lables]) => self
+Resets metrics in the collector. Optionally pass in labels to reset only those labels.
+
+#### collector.resetAll() => self
+Resets all metrics in the collector, including metrics with labels.
+
+
+### Counter
+A counter can only ever by incremented positively.
+#### counter.inc([labels]) => self
+Increments a counter. Optionally pass in a set of labels to increment only those labels.
+
+#### counter.add(amount, [labels]) => self
+Increments a counter by a given amount. `amount` must be a Number. Optionally pass in a set of labels to increment only those labels.
+
+```javascript
+const counter = registry.create('counter', 'my_counter', 'A counter for things');
+counter.inc();
+counter.add(2, { ok: true, status: 'success', code: 200 });
+counter.add(2, { ok: false, status: 'fail', code: 403 });
+
+console.log(registry.metrics());
+// =>
+// # HELP my_counter A counter for things
+// # TYPE my_counter counter
+// my_counter 1
+// my_counter{ok="true",status="success",code="200"} 2
+// my_counter{ok="false",status="fail",code="403"} 2
+```
+
+
+### Gauge
+A gauge is similar to a counter, but can be incremented up and down.
+#### gauge.inc([labels]) => self
+Increments a gauge by 1.
+
+#### gauge.dec([lables]) => self
+Decrements a gauge by 1.
+
+#### gauge.add(amount, [lables]) => self
+Increments a gauge by a given amount. `amount` must be a Number.
+
+#### gauge.sub(amount, [labels]) => self
+Decrements a gauge by a given amount.
+
+```javascript
+const gauge = registry.create('gauge', 'my_gauge', 'A gauge for stuffs');
+gauge.inc();
+gauge.inc({ instance: 'some_instance' });
+gauge.dec({ instance: 'some_instance' });
+gauge.add(100, { instance: 'some_instance' });
+gauge.sub(50, { instance: 'some_instance' });
+
+console.log(registry.metrics());
+// =>
+// # HELP my_gauge A gauge for stuffs
+// # TYPE my_gauge gauge
+// my_gauge 1
+// my_gauge{instance="some_instance"} 50
+```
+
+### Histogram
+Histograms are used to group values into pre-defined buckets. Buckets are passed in to the `registry.create()` call.
+
+#### histogram.observe(value) => self
+Adds `value` to a pre-existing bucket.`value` must be a number.
+
+```javascript
+const histogram = registry.create('histogram', 'response_time', 'The response time', [
+  200,
+  300,
+  400,
+  500
+]);
+histogram.observe(299);
+histogram.observe(253, { path: '/api/users', status: 200 });
+histogram.observe(499, { path: '/api/users', status: 200 });
+
+console.log(registry.metrics());
+// =>
+// # HELP response_time The response time
+// # TYPE response_time histogram
+// response_time_count 3
+// response_time_sum 599
+// response_time_bucket{le="200"} 1
+// response_time_bucket{le="400",path="/api/users",status="200"} 1
+// response_time_bucket{le="200",path="/api/users",status="200"} 1
+```

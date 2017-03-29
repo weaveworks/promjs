@@ -68,6 +68,7 @@ export default class Histogram extends Collector {
 
     metric.value.sum = sum(metric.value.raw);
     metric.value.count += 1;
+    return this;
   }
 
   reset(labels) {
