@@ -21,7 +21,6 @@ describe('Registry', function () {
   it('renders metrics with labels to prometheus format', () => {
     let desired = '# HELP my_counter A counter for things\n';
     desired += '# TYPE my_counter counter\n';
-    desired += 'my_counter 0\n';
     desired += 'my_counter{path="/org/:orgId",foo="bar"} 10\n';
 
     counter.add(10, { path: '/org/:orgId', foo: 'bar' });

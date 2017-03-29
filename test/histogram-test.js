@@ -28,4 +28,25 @@ describe('Histogram', function () {
       }
     });
   });
+  it('clears observed values', () => {
+    histogram.observe(380);
+    histogram.observe(400);
+    histogram.observe(199);
+    histogram.reset();
+    const result = histogram.collect();
+    result.should.deepEqual([{
+      value: {
+        sum: 0,
+        count: 0,
+        raw: [],
+        entries: {
+          '200': 0,
+          '400': 0,
+          '750': 0,
+          '1000': 0
+        }
+      }
+    }]);
+    result.length.should.equal(1);
+  });
 });

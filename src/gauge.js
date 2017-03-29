@@ -1,10 +1,10 @@
 import Collector from './collector';
-import { add } from './mixins';
+import { add, resetCounter, resetAll } from './mixins';
 
 export default class Gauge extends Collector {
   constructor(name, help) {
     super('gauge', name, help);
-    this.set(0);
+    // this.set(0);
     this.inc = this.inc.bind(this);
     this.dec = this.dec.bind(this);
     this.add = this.add.bind(this);
@@ -29,5 +29,13 @@ export default class Gauge extends Collector {
     const metric = this.get(labels);
     this.set(metric ? metric.value - amount : 0, labels);
     return this;
+  }
+
+  reset(labels) {
+    return resetCounter.call(this, labels);
+  }
+
+  resetAll() {
+    return resetAll.call(this);
   }
 }

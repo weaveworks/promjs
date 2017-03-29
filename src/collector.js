@@ -26,4 +26,9 @@ export default class Collector {
   collect(labels) {
     return filter(this.data, matches(labels));
   }
+
+  clearAll() {
+    this.data = [];
+    return this;
+  }
 }

@@ -1,10 +1,10 @@
 import Collector from './collector';
-import { add } from './mixins';
+import { add, resetCounter, resetAll } from './mixins';
 
 export default class Counter extends Collector {
   constructor() {
     super();
-    this.set(0);
+    // this.set(0);
     this.inc = this.inc.bind(this);
     this.reset = this.reset.bind(this);
   }
@@ -18,7 +18,10 @@ export default class Counter extends Collector {
   }
 
   reset(labels) {
-    this.set(0, labels);
-    return this;
+    return resetCounter.call(this, labels);
+  }
+
+  resetAll() {
+    return resetAll.call(this);
   }
 }

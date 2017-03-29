@@ -1,14 +1,14 @@
-import { each, includes } from 'lodash';
+import { each, includes, last } from 'lodash';
 import prom from '../src/index';
 
 describe('promjs', function () {
   // e2e Test
-  it('reports metrics', () => {
-    let actual;
-    const desired = [];
-    const registry = prom();
-    const errors = [];
+  let actual, registry, desired, errors;
 
+  beforeEach(() => {
+    desired = [];
+    registry = prom();
+    errors = [];
     const counter = registry.create('counter', 'my_counter', 'A counter for things');
     const gauge = registry.create('gauge', 'my_gauge', 'A gauge for stuffs');
     const histogram = registry.create('histogram', 'response_time', 'The response time', [
@@ -55,12 +55,22 @@ describe('promjs', function () {
     desired.push('response_time_bucket{le="200",path="/api/users",status="200"} 1\n');
 
     actual = registry.metrics();
+  });
+  it('reports metrics', () => {
     each(desired, (d) => {
       if (!includes(actual, d)) {
         errors.push(d);
       }
     });
-
     errors.should.deepEqual([], errors);
+  });
+  it('resets all metrics', () => {
+    const cleared = registry.clear().metrics();
+    // Check that the end of each metric string is a 0
+    each(cleared.split('\n'), (m) => {
+      if (m && !includes(m, 'TYPE') && !includes(m, 'HELP')) {
+        last(m).should.equal('0');
+      }
+    });
   });
 });

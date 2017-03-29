@@ -1,3 +1,4 @@
+import { each, omit } from 'lodash';
 
 export function add(amount, labels) {
   if (typeof amount !== 'number') {
@@ -10,4 +11,15 @@ export function add(amount, labels) {
   const metric = this.get(labels);
   this.set(metric ? metric.value + amount : amount, labels);
   return this;
+}
+
+export function resetCounter(labels) {
+  this.set(0, labels);
+  return this;
+}
+
+export function resetAll() {
+  each(this.data, (d) => {
+    this.reset(omit(d, 'value'));
+  });
 }

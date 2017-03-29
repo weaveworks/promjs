@@ -75,7 +75,7 @@ export default class Registry {
   clear() {
     each(this.data, (metrics) => {
       each(metrics, ({ instance }) => {
-        instance.reset();
+        instance.resetAll();
       });
     });
     return this;
