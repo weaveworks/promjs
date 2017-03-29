@@ -5,8 +5,10 @@ import Collector from './collector';
 function findBucket(ary, num) {
   const max = Math.max.apply(null, ary);
   const min = Math.min.apply(null, ary);
-  // Less that the smallest bucket
-  if (num <= min) { return min; }
+  // Lower than the smallest bucket
+  if (num < min) { return null; }
+  // Equals the smallest bucket
+  if (num === min) { return min; }
   // Bigger than the smallest bucket.
   if (num >= max) { return max; }
 
@@ -58,8 +60,10 @@ export default class Histogram extends Collector {
     }
     metric.value.raw.push(value);
     const bucket = findBucket(this.buckets, value);
-    const val = metric.value.entries[bucket.toString()];
-    metric.value.entries[bucket.toString()] = val + 1;
+    if (bucket) {
+      const val = metric.value.entries[bucket.toString()];
+      metric.value.entries[bucket.toString()] = val + 1;
+    }
 
     metric.value.sum = sum(metric.value.raw);
     metric.value.count += 1;

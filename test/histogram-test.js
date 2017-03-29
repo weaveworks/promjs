@@ -21,7 +21,7 @@ describe('Histogram', function () {
       sum: 979,
       count: 3,
       entries: {
-        '200': 2,
+        '200': 1,
         '400': 1,
         '750': 0,
         '1000': 0
