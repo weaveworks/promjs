@@ -9,7 +9,7 @@ function findBucket(ary, num) {
   if (num < min) { return null; }
   // Equals the smallest bucket
   if (num === min) { return min; }
-  // Bigger than the smallest bucket.
+  // Bigger/equal to the the largest bucket.
   if (num >= max) { return max; }
 
   // This works because histogram bucket arrays are sorted smallest to largest.
