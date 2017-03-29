@@ -65,9 +65,10 @@ describe('promjs', function () {
     errors.should.deepEqual([], errors);
   });
   it('resets all metrics', () => {
-    const cleared = registry.clear().metrics();
+    const cleared = registry.clear().metrics().split('\n');
     // Check that the end of each metric string is a 0
-    each(cleared.split('\n'), (m) => {
+    cleared.length.should.be.greaterThan(5);
+    each(cleared, (m) => {
       if (m && !includes(m, 'TYPE') && !includes(m, 'HELP')) {
         last(m).should.equal('0');
       }
