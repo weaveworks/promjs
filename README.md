@@ -82,8 +82,6 @@ Fetches an existing metric by name. Returns null if no metrics are found
 ### Collector
 All of the metric classes (Counter, Gauge, Histogram) inherit from the Collector class. Collector methods are available on each of the metic classes.
 
-Labels are plain JS objects that will be converted to prometheus formatted strings. For example:
-
 #### collector.reset([lables]) => self
 Resets metrics in the collector. Optionally pass in labels to reset only those labels.
 
@@ -92,7 +90,7 @@ Resets all metrics in the collector, including metrics with labels.
 
 
 ### Counter
-A counter can only ever by incremented positively.
+A counter can only ever be incremented positively.
 #### counter.inc([labels]) => self
 Increments a counter. Optionally pass in a set of labels to increment only those labels.
 
