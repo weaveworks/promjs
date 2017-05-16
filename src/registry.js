@@ -4,11 +4,12 @@ import { formatHistogramOrSummary, formatCounterOrGauge } from './utils';
 import Counter from './counter';
 import Gauge from './gauge';
 import Histogram from './histogram';
+import Summary from './summary';
 
 export default class Registry {
   constructor() {
-    // initialize an empty object on every metric type. only counters and gauges are supported currently.
-    this.data = zipObject(['counter', 'gauge', 'histogram'], [{}, {}, {}]);
+    // initialize an empty object on every metric type
+    this.data = zipObject(['counter', 'gauge', 'histogram', 'summary'], [{}, {}, {}, {}]);
   }
 
   create(type, name, help, options) {
@@ -42,6 +43,13 @@ export default class Registry {
           instance: new Histogram(options)
         };
         return this.data.histogram[name].instance;
+      case 'summary':
+      this.data.summary[name] = {
+        type,
+        help,
+        instance: new Summary(options)
+      };
+      return this.data.summary[name].instance;
       default:
         throw new Error('No metric type specified.');
     }
@@ -61,9 +69,15 @@ export default class Registry {
         result += `# TYPE ${name} ${type}\n`;
         // Each metric can have many labels. Iterate over each and append to the string.
         result += reduce(values, (str, value) => {
-          str += type === 'counter' || type === 'gauge'
-            ? formatCounterOrGauge(name, value)
-            : formatHistogramOrSummary(name, value);
+
+          if (type === 'counter' || type === 'gauge') {
+            str += formatCounterOrGauge(name, value);
+          }else if (type === 'histogram') {
+            str += formatHistogramOrSummary(name, value);
+          }else {
+            str += formatHistogramOrSummary(name, value, 'quantile', '');
+          }
+
           return str;
         }, '');
         return result;

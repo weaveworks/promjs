@@ -13,7 +13,7 @@ function getLabelPairs(metric) {
   return pairs.length === 0 ? '' : `${pairs.join(',')}`;
 }
 
-export function formatHistogramOrSummary(name, metric, bucketLabel = 'le') {
+export function formatHistogramOrSummary(name, metric, bucketLabel = 'le', suffix = '_bucket') {
   let str = '';
   const labels = getLabelPairs(metric);
   if (labels) {
@@ -27,9 +27,9 @@ export function formatHistogramOrSummary(name, metric, bucketLabel = 'le') {
 
   return reduce(metric.value.entries, (result, count, bucket) => {
     if (labels) {
-      str += `${name}_bucket{${bucketLabel}="${bucket}",${labels}} ${count}\n`;
+      str += `${name}${suffix}{${bucketLabel}="${bucket}",${labels}} ${count}\n`;
     } else {
-      str += `${name}_bucket{${bucketLabel}="${bucket}"} ${count}\n`;
+      str += `${name}${suffix}{${bucketLabel}="${bucket}"} ${count}\n`;
     }
 
     return str;
@@ -54,4 +54,21 @@ export function formatCounterOrGauge(name, metric) {
   }
   const pair = map(omit(metric, 'value'), (v, k) => `${k}="${v}"`);
   return `${name}{${pair.join(',')}}${value}\n`;
+}
+
+// Get the initial value for histograms.
+// Works for summaries too.
+export function getInitialValue(buckets, initialValue = 0) {
+  // Make the skeleton to which values will be saved.
+  const entries = reduce(buckets, (result, b) => {
+    result[b.toString()] = initialValue;
+    return result;
+  }, {});
+
+  return {
+    sum: 0,
+    count: 0,
+    entries,
+    raw: []
+  };
 }

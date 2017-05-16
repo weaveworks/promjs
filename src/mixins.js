@@ -1,5 +1,7 @@
 import { each, omit } from 'lodash';
 
+import { getInitialValue } from './utils';
+
 export function add(amount, labels) {
   if (typeof amount !== 'number') {
     throw new Error(`Expected ${amount} to be a number. Check the arguments to 'increment'`);
@@ -22,5 +24,10 @@ export function resetAll() {
   each(this.data, (d) => {
     this.reset(omit(d, 'value'));
   });
+  return this;
+}
+
+export function reset(labels) {
+  this.set(getInitialValue(this.buckets || this.quantiles), labels);
   return this;
 }

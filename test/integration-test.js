@@ -17,6 +17,7 @@ describe('promjs', function () {
       400,
       500
     ]);
+    const summary = registry.create('summary', 'request_latency_summary', 'The latency');
 
     desired.push('# HELP my_counter A counter for things\n');
     desired.push('# TYPE my_counter counter\n');
@@ -53,6 +54,15 @@ describe('promjs', function () {
     histogram.observe(499, { path: '/api/users', status: 200 });
     desired.push('response_time_bucket{le="400",path="/api/users",status="200"} 2\n');
     desired.push('response_time_bucket{le="200",path="/api/users",status="200"} 1\n');
+
+    summary.observe(401, { path: '/api/users', status: 200 });
+    summary.observe(253, { path: '/api/users', status: 200 });
+    summary.observe(499, { path: '/api/users', status: 200 });
+    desired.push('request_latency_summary_count{path="/api/users",status="200"} 3\n');
+    desired.push('request_latency_summary_sum{path="/api/users",status="200"} 1153\n');
+    desired.push('request_latency_summary{quantile="0.5",path="/api/users",status="200"} 253\n');
+    desired.push('request_latency_summary{quantile="0.9",path="/api/users",status="200"} 499\n');
+    desired.push('request_latency_summary{quantile="0.99",path="/api/users",status="200"} 499\n');
 
     actual = registry.metrics();
   });

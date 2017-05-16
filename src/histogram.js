@@ -1,6 +1,7 @@
-import { reduce, sum } from 'lodash';
+import { sum } from 'lodash';
 
-import { resetAll } from './mixins';
+import { resetAll, reset } from './mixins';
+import { getInitialValue } from './utils';
 import Collector from './collector';
 
 function findBucket(ary, num) {
@@ -28,29 +29,15 @@ function findBucket(ary, num) {
   }
 }
 
-function getInitialValue(buckets) {
-  // Make the skeleton to which values will be saved.
-  const entries = reduce(buckets, (result, b) => {
-    result[b.toString()] = 0;
-    return result;
-  }, {});
-
-  return {
-    sum: 0,
-    count: 0,
-    entries,
-    raw: []
-  };
-}
-
 export default class Histogram extends Collector {
   constructor(buckets) {
     super();
     // Sort to get smallest -> largest in order.
-    const sorted = buckets.sort((a, b) => a > b ? 1 : -1);
-    this.buckets = sorted;
+    this.buckets = buckets.sort((a, b) => a > b ? 1 : -1);
     this.set(getInitialValue(this.buckets));
     this.observe = this.observe.bind(this);
+    this.reset = reset.bind(this);
+    this.resetAll = resetAll.bind(this);
   }
 
   observe(value, labels) {
@@ -69,14 +56,5 @@ export default class Histogram extends Collector {
     metric.value.sum = sum(metric.value.raw);
     metric.value.count += 1;
     return this;
-  }
-
-  reset(labels) {
-    this.set(getInitialValue(this.buckets), labels);
-    return this;
-  }
-
-  resetAll() {
-    return resetAll.call(this);
   }
 }
