@@ -55,14 +55,15 @@ describe('promjs', function () {
     desired.push('response_time_bucket{le="400",path="/api/users",status="200"} 2\n');
     desired.push('response_time_bucket{le="200",path="/api/users",status="200"} 1\n');
 
-    summary.observe(401, { path: '/api/users', status: 200 });
-    summary.observe(253, { path: '/api/users', status: 200 });
+    summary.observe(250, { path: '/api/users', status: 200 });
     summary.observe(499, { path: '/api/users', status: 200 });
+    summary.observe(750, { path: '/api/users', status: 200 });
+    summary.observe(2750, { path: '/api/users', status: 200 });
     desired.push('request_latency_summary_count{path="/api/users",status="200"} 3\n');
     desired.push('request_latency_summary_sum{path="/api/users",status="200"} 1153\n');
-    desired.push('request_latency_summary{quantile="0.5",path="/api/users",status="200"} 253\n');
-    desired.push('request_latency_summary{quantile="0.9",path="/api/users",status="200"} 499\n');
-    desired.push('request_latency_summary{quantile="0.99",path="/api/users",status="200"} 499\n');
+    desired.push('request_latency_summary{quantile="0.5",path="/api/users",status="200"} 499\n');
+    desired.push('request_latency_summary{quantile="0.9",path="/api/users",status="200"} 750\n');
+    desired.push('request_latency_summary{quantile="0.99",path="/api/users",status="200"} 2750\n');
 
     actual = registry.metrics();
   });

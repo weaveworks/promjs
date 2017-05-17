@@ -8,9 +8,10 @@ import Collector from './collector';
 const DEFAULT_QUANTILES = [0.5, 0.9, 0.99];
 
 function calculate(quantiles, values) {
+  const count = values.length;
   return reduce(quantiles, (result, q) => {
-    const index = values.length * q;
-    result[q.toString()] = values[Math.floor(index)];
+    const index = Math.floor(count * q);
+    result[q.toString()] = values[index];
     return result;
   }, {});
 }
