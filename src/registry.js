@@ -1,6 +1,6 @@
 import { zipObject, has, each, reduce, find, valuesIn } from 'lodash';
 
-import { formatHistogramOrSummary, formatCounterOrGauge } from './utils';
+import { formatHistogram, formatCounterOrGauge, formatSummary } from './utils';
 import Counter from './counter';
 import Gauge from './gauge';
 import Histogram from './histogram';
@@ -73,9 +73,9 @@ export default class Registry {
           if (type === 'counter' || type === 'gauge') {
             str += formatCounterOrGauge(name, value);
           }else if (type === 'histogram') {
-            str += formatHistogramOrSummary(name, value);
+            str += formatHistogram(name, value);
           }else {
-            str += formatHistogramOrSummary(name, value, 'quantile', '');
+            str += formatSummary(name, value, 'quantile', '');
           }
 
           return str;

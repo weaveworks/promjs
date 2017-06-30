@@ -38,4 +38,7 @@ describe('utils', () => {
 
     formatHistogramOrSummary('my_histogram', complex).should.equal(desired);
   });
+  it.skip('formats a summary metric', () => {
+
+  });
 });

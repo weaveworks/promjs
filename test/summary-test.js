@@ -1,4 +1,4 @@
-import { each, sum, first, omit } from 'lodash';
+import { each, sum, first, omit, map } from 'lodash';
 
 import  Summary from '../src/summary';
 
@@ -59,6 +59,7 @@ describe('Summary', () => {
     });
   });
   it('records complex stuff', () => {
+    //https://github.com/prometheus/client_golang/blob/master/prometheus/examples_test.go#L335
     for (let i = 0; i < 1000; i += 1) {
       const num = (30 + Math.floor(120 * Math.sin(i * 0.1)) / 10);
       summary.observe(num);
@@ -66,6 +67,10 @@ describe('Summary', () => {
 
     // omit raw to make the output easier to read
     const result = omit(first(summary.collect()), 'value.raw');
+    const percentiles = map([0.5, 0.9, 0.99], p =>
+      result.value.td.percentile(p)
+    );
+    debugger;
     result.should.containEql({
       value: {
         count: 1000,

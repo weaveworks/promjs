@@ -13,7 +13,7 @@ function getLabelPairs(metric) {
   return pairs.length === 0 ? '' : `${pairs.join(',')}`;
 }
 
-export function formatHistogramOrSummary(name, metric, bucketLabel = 'le', suffix = '_bucket') {
+export function formatHistogram(name, metric, bucketLabel = 'le', suffix = '_bucket') {
   let str = '';
   const labels = getLabelPairs(metric);
   if (labels) {
@@ -36,6 +36,14 @@ export function formatHistogramOrSummary(name, metric, bucketLabel = 'le', suffi
   }, str);
 }
 
+export function formatSummary(name, metric) {
+  let str = '';
+  const r = map(metric.quantiles, percentile =>
+    metric.value.td.percentile(percentile)
+  );
+
+  debugger;
+}
 
 export function findExistingMetric(labels, values) {
   // If there are no labels, there can only be one metric
