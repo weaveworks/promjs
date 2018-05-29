@@ -32,8 +32,8 @@ module.exports = (env, options) => {
         loader: 'babel-loader',
         exclude: /(node_modules)/,
         query: {
-          plugins: ['lodash'],
-          presets: [['env', { 'targets': { 'node': 4 } }]]
+          plugins: ['lodash', 'transform-object-rest-spread'],
+          presets: ['es2015']
         }
       }]
     },
