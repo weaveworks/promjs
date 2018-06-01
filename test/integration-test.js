@@ -45,14 +45,21 @@ describe('promjs', function () {
     histogram.observe(300);
     desired.push('response_time_count 2\n');
     desired.push('response_time_sum 599\n');
-    desired.push('response_time_bucket{le="200"} 1\n');
-    desired.push('response_time_bucket{le="300"} 1\n');
+    desired.push('response_time_bucket{le="200"} 0\n');
+    desired.push('response_time_bucket{le="300"} 2\n');
+    desired.push('response_time_bucket{le="400"} 2\n');
+    desired.push('response_time_bucket{le="500"} 2\n');
+    desired.push('response_time_bucket{le="+Inf"} 2\n');
 
     histogram.observe(401, { path: '/api/users', status: 200 });
     histogram.observe(253, { path: '/api/users', status: 200 });
     histogram.observe(499, { path: '/api/users', status: 200 });
-    desired.push('response_time_bucket{le="400",path="/api/users",status="200"} 2\n');
-    desired.push('response_time_bucket{le="200",path="/api/users",status="200"} 1\n');
+    histogram.observe(700, { path: '/api/users', status: 200 });
+    desired.push('response_time_bucket{le="200",path="/api/users",status="200"} 0\n');
+    desired.push('response_time_bucket{le="300",path="/api/users",status="200"} 1\n');
+    desired.push('response_time_bucket{le="400",path="/api/users",status="200"} 1\n');
+    desired.push('response_time_bucket{le="500",path="/api/users",status="200"} 3\n');
+    desired.push('response_time_bucket{le="+Inf",path="/api/users",status="200"} 4\n');
 
     actual = registry.metrics();
   });
