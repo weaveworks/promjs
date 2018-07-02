@@ -4,7 +4,7 @@ import { resetAll } from './mixins';
 import Collector from './collector';
 
 function findMinBucketIndex(ary, num) {
-  if (num > ary[ary.lenght - 1]) { return null; }
+  if (num > ary[ary.length - 1]) { return null; }
 
   for (let i = 0; i < ary.length; i += 1) {
     if (num <= ary[i]) {
