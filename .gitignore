@@ -1,7 +1,6 @@
 # Build
 build/
 lib/
-dist/
 
 # Coverage directory used by tools like istanbul
 coverage

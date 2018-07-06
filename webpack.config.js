@@ -21,7 +21,7 @@ module.exports = (env, options) => {
     entry: './src',
     mode,
     output: {
-      path: __dirname + '/dist',
+      path: __dirname + '/lib/dist',
       filename: outputFile,
       library: LIBRARY_NAME,
       libraryTarget: 'var'
