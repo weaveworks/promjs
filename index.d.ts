@@ -1,10 +1,6 @@
-declare var promjs: Promjs.Promjs;
+export = PromJs;
 
 declare namespace PromJs {
-  class PromJs {
-    static default(): Registry;
-  }
-
   /**
    * The Registry is used for creating and storing new Collectors (metrics).
    * Once created, a collector can be retrieved from the registry by it's name.
