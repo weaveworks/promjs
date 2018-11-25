@@ -1,4 +1,9 @@
-import { zipObject, has, each, reduce, find, valuesIn } from 'lodash';
+import zipObject from "lodash/zipObject";
+import has from "lodash/has";
+import each from "lodash/each";
+import reduce from "lodash/reduce";
+import find from "lodash/find";
+import valuesIn from "lodash/valuesIn";
 
 import { formatHistogramOrSummary, formatCounterOrGauge } from './utils';
 import Counter from './counter';

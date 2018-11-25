@@ -1,7 +1,8 @@
-import { reduce, sum } from 'lodash';
+import reduce from "lodash/reduce";
+import sum from "lodash/sum";
 
-import { resetAll } from './mixins';
-import Collector from './collector';
+import { resetAll } from "./mixins";
+import Collector from "./collector";
 
 function findMinBucketIndex(ary, num) {
   if (num > ary[ary.length - 1]) { return null; }

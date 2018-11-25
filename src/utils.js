@@ -1,16 +1,13 @@
-import {
-  isEqual,
-  omit,
-  keys,
-  map,
-  find,
-  reduce
-} from 'lodash';
+import isEqual from "lodash/isEqual";
+import omit from "lodash/omit";
+import reduce from "lodash/reduce";
+import find from "lodash/find";
 
+const getPairs = data => Object.keys(data).map(key => `${key}="${data[key]}"`);
 
 function getLabelPairs(metric) {
-  const pairs = map(omit(metric, 'value'), (v, k) => `${k}="${v}"`);
-  return pairs.length === 0 ? '' : `${pairs.join(',')}`;
+  const pairs = getPairs(omit(metric, "value"));
+  return pairs.length === 0 ? "" : `${pairs.join(",")}`;
 }
 
 export function formatHistogramOrSummary(name, metric, bucketLabel = 'le') {
@@ -52,6 +49,6 @@ export function formatCounterOrGauge(name, metric) {
   if (keys(metric).length === 1 && typeof metric.value === 'number') {
     return `${name}${value}\n`;
   }
-  const pair = map(omit(metric, 'value'), (v, k) => `${k}="${v}"`);
-  return `${name}{${pair.join(',')}}${value}\n`;
+  const pair = getPairs(omit(metric, "value"));
+  return `${name}{${pair.join(",")}}${value}\n`;
 }
