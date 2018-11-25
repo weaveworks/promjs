@@ -1,5 +1,5 @@
-import each from "lodash/each";
-import omit from "lodash/omit";
+import each from 'lodash/each';
+import omit from 'lodash/omit';
 
 export function add(amount, labels) {
   if (typeof amount !== 'number') {

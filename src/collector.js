@@ -1,6 +1,6 @@
-import filter from "lodash/filter";
-import matches from "lodash/matches";
-import { findExistingMetric } from "./utils";
+import filter from 'lodash/filter';
+import matches from 'lodash/matches';
+import { findExistingMetric } from './utils';
 
 export default class Collector {
   constructor() {
