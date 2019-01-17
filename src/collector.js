@@ -1,4 +1,5 @@
-import { filter, matches } from 'lodash';
+import filter from 'lodash/filter';
+import matches from 'lodash/matches';
 import { findExistingMetric } from './utils';
 
 export default class Collector {

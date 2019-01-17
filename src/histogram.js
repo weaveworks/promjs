@@ -1,4 +1,5 @@
-import { reduce, sum } from 'lodash';
+import reduce from 'lodash/reduce';
+import sum from 'lodash/sum';
 
 import { resetAll } from './mixins';
 import Collector from './collector';
