@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    // Target latest version of ECMAScript.
+    "target": "esnext",
+    // Process & infer types from .js files.
+    "allowJs": false,
+    // Import non-ES modules as default imports.
+    "esModuleInterop": true,
+
+    "outDir": "./lib/",       // path to output directory
+    // strict without alwaysStrict
+    "noImplicitThis": true,
+    "strictPropertyInitialization": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "declaration": true,
+    "noUnusedLocals": true,
+    "module": "commonjs",
+    "baseUrl": "."
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "include": [
+    "./src/"
+  ]
+}

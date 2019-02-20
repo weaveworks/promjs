@@ -1,15 +1,21 @@
 {
-  "extends": "eslint:recommended",
-  "plugins": ["import"],
-  "parser": "babel-eslint",
+  "extends": [
+    "airbnb-typescript",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": [
+    "import",
+    "@typescript-eslint"
+  ],
+  "parser": "@typescript-eslint/parser",
   "env": {
-    "node" : true,
-    "es6": true,
+    "node": true,
+    "browser": true,
     "mocha": true
   },
   "parserOptions": {
     "ecmaVersion": 6,
-    "sourceType": "module",
+    "sourceType": "module"
   },
   "rules": {
     "semi": 2,
@@ -23,9 +29,38 @@
         "peerDependencies": true
       }
     ],
+    "import/named": 0,
+    "import/no-duplicates": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "import/no-cycle": 0,
+    "no-dupe-class-members": 0,
+    "indent": "off",
+    "@typescript-eslint/indent": [
+      "error",
+      2
+    ],
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "@typescript-eslint/explicit-member-accessibility": 0,
+    "@typescript-eslint/no-object-literal-type-assertion": 0,
     "import/prefer-default-export": 0,
     "no-param-reassign": 0,
     "no-restricted-properties": 0,
-    "object-curly-spacing": ["error", "always"]
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
+    "object-curly-newline": [
+      "error",
+      {
+        "ObjectPattern": {
+          "multiline": true
+        },
+        "ImportDeclaration": "never",
+        "ExportDeclaration": {
+          "multiline": true,
+          "minProperties": 3
+        }
+      }
+    ]
   }
 }

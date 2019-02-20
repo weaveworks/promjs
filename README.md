@@ -1,6 +1,6 @@
 ## promjs
 
-A Prometheus metrics registry implemented in JavaScript
+A Prometheus metrics registry implemented in TypeScript
 
 ### Goals
 * Stick to [Prometheus client best practices](https://prometheus.io/docs/instrumenting/writing_clientlibs/) as closely as possible
@@ -75,14 +75,14 @@ console.log(registry.metrics());
 Resets all existing metrics to 0. This can be used to reset metrics after reporting to a prometheus aggregator. Returns itself to allow for chaining.
 
 
-#### registry.get(name) =>  collector (*counter | gauge | histogram*) | null
+#### registry.get(type, name) =>  collector (*counter | gauge | histogram*) | null
 Fetches an existing metric by name. Returns null if no metrics are found
 
 
 ### Collector
 All of the metric classes (Counter, Gauge, Histogram) inherit from the Collector class. Collector methods are available on each of the metic classes.
 
-#### collector.reset([lables]) => self
+#### collector.reset([labels]) => self
 Resets metrics in the collector. Optionally pass in labels to reset only those labels.
 
 #### collector.resetAll() => self

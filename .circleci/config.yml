@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:8.4
+      - image: circleci/node:10
 
     working_directory: ~/repo
 
@@ -27,7 +27,7 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-        
+
       - run: yarn lint
       - run: yarn test
 

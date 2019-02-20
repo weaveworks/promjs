@@ -1,6 +1,10 @@
 {
-  "presets": ["es2015"],
+  "presets": [
+    "@babel/env",
+    "@babel/preset-typescript"
+  ],
   "plugins": [
-    ["transform-object-rest-spread", { "useBuiltIns": true }]
+    "@babel/proposal-class-properties",
+    ["@babel/proposal-object-rest-spread", { "useBuiltIns": true }]
   ]
 }
