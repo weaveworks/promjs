@@ -1,27 +1,6 @@
 import { filter, matches, each } from 'lodash';
+import { Labels, Metric, MetricValue } from './types';
 import { findExistingMetric } from './utils';
-
-export type CounterValue = number;
-export interface HistogramValueEntries {
-  [key: string]: number;
-}
-
-export interface HistogramValue {
-  entries: HistogramValueEntries;
-  sum: number;
-  count: number;
-  raw: number[];
-}
-
-export type MetricValue = CounterValue | HistogramValue;
-export interface Metric<T extends MetricValue> {
-  value: T;
-  labels?: Labels;
-}
-
-export interface Labels {
-  [key: string]: string | number;
-}
 
 export abstract class Collector<T extends MetricValue> {
   private readonly data: Metric<T>[];

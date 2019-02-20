@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Counter } from '../src';
+import { Counter } from '../src/counter';
 
 describe('Counter', () => {
   let counter: Counter;

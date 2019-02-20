@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { each, includes, last } from 'lodash';
 import prom from '../src';
-import { Registry } from '../src';
+import { Registry } from '../src/registry';
 
 describe('promjs', () => {
   // e2e Test

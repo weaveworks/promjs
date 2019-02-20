@@ -1,5 +1,5 @@
 import { find, isEqual, map, reduce } from 'lodash';
-import { HistogramValue, Labels, Metric, MetricValue } from './collector';
+import { HistogramValue, Labels, Metric, MetricValue } from './types';
 
 function getLabelPairs(metric: Metric<MetricValue>): string {
   const pairs = map(metric.labels, (v, k) => `${k}="${v}"`);

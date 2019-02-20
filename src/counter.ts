@@ -1,4 +1,5 @@
-import { Collector, CounterValue, Labels } from './collector';
+import { Collector } from './collector';
+import { CounterValue, Labels } from './types';
 
 export class Counter extends Collector<CounterValue> {
   inc(labels?: Labels): this {

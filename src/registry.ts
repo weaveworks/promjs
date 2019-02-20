@@ -1,12 +1,11 @@
 import { each, has, reduce, valuesIn } from 'lodash';
-import { Collector, CounterValue, HistogramValue, Metric } from './collector';
+import { Collector } from './collector';
 import { Counter } from './counter';
 import { Gauge } from './gauge';
 import { Histogram } from './histogram';
+import { CollectorType, CounterValue, HistogramValue, Metric } from './types';
 
 import { formatCounterOrGauge, formatHistogramOrSummary } from './utils';
-
-export type CollectorType = 'counter' | 'gauge' | 'histogram';
 
 type CollectorForType<T extends CollectorType> =
   T extends 'histogram' ? Histogram :

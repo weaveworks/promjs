@@ -1,6 +1,7 @@
 import { reduce, sum } from 'lodash';
 
-import { Collector, HistogramValue, HistogramValueEntries, Labels } from './collector';
+import { Collector } from './collector';
+import { HistogramValue, HistogramValueEntries, Labels } from './types';
 
 function findMinBucketIndex(ary: number[], num: number): number | undefined {
   if (num < ary[ary.length - 1]) {

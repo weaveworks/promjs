@@ -1,4 +1,4 @@
-import { Labels } from './collector';
+import { Labels } from './types';
 import { Counter } from './counter';
 
 export class Gauge extends Counter {

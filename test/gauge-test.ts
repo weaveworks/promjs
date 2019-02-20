@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Gauge } from '../src';
+import { Gauge } from '../src/gauge';
 
 describe('Gauge', () => {
   let gauge: Gauge;
