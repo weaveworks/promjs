@@ -1,5 +1,5 @@
 {
-  "name": "promjs",
+  "name": "@weaveworks/promjs",
   "version": "0.4.0",
   "description": "",
   "main": "lib/index.js",
@@ -14,6 +14,9 @@
     "push": "cd lib && npm login && npm publish && git push --set-upstream origin master --follow-tags"
   },
   "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.3",

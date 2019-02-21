@@ -11,11 +11,11 @@ A Prometheus metrics registry implemented in TypeScript
 ### Installation
 Install via `npm`:
 
-`$ npm install --save promjs`
+`$ npm install --save @weaveworks/promjs`
 
 or via `yarn`:
 
-`$ yarn add promjs`
+`$ yarn add @weaveworks/promjs`
 
 
 ### Usage
