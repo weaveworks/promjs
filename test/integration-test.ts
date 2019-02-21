@@ -1,9 +1,14 @@
+import { expect } from 'chai';
 import { each, includes, last } from 'lodash';
-import prom from '../src/index';
+import prom from '../src';
+import { Registry } from '../src/registry';
 
-describe('promjs', function () {
+describe('promjs', () => {
   // e2e Test
-  let actual, registry, desired, errors;
+  let actual: string;
+  let registry: Registry;
+  let desired: string[];
+  let errors: string[];
 
   beforeEach(() => {
     desired = [];
@@ -15,7 +20,7 @@ describe('promjs', function () {
       200,
       300,
       400,
-      500
+      500,
     ]);
 
     desired.push('# HELP my_counter A counter for things\n');
@@ -23,8 +28,8 @@ describe('promjs', function () {
     counter.inc();
     desired.push('my_counter 1\n');
 
-    counter.add(2, { ok: true, status: 'success', code: 200 });
-    counter.add(2, { ok: false, status: 'fail', code: 403 });
+    counter.add(2, { ok: 'true', status: 'success', code: 200 });
+    counter.add(2, { ok: 'false', status: 'fail', code: 403 });
     desired.push('my_counter{ok="true",status="success",code="200"} 2\n');
     desired.push('my_counter{ok="false",status="fail",code="403"} 2\n');
 
@@ -63,21 +68,25 @@ describe('promjs', function () {
 
     actual = registry.metrics();
   });
+
   it('reports metrics', () => {
     each(desired, (d) => {
       if (!includes(actual, d)) {
-        errors.push(d);
+        errors.push(`Actual: ${actual}\nExpected: ${d}`);
       }
     });
-    errors.should.deepEqual([], errors);
+
+    expect(errors).deep.equals([], errors.join('\n'));
   });
-  it('resets all metrics', () => {
-    const cleared = registry.clear().metrics().split('\n');
+
+  it('clear all metrics', () => {
+    const cleared = registry.reset().metrics().split('\n');
+
     // Check that the end of each metric string is a 0
-    cleared.length.should.be.greaterThan(5);
+    expect(cleared.length).greaterThan(5);
     each(cleared, (m) => {
       if (m && !includes(m, 'TYPE') && !includes(m, 'HELP')) {
-        last(m).should.equal('0');
+        expect(last(m)).equals('0');
       }
     });
   });

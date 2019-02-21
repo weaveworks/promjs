@@ -1,5 +1,4 @@
 # Build
-build/
 lib/
 
 # Coverage directory used by tools like istanbul
