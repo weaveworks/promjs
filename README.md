@@ -47,7 +47,7 @@ Returns a registry class.
 Returns a metric class of the specified type. The metric is already registered with the registry that creates it.
 
 Arguments
-1. `type` (*String*): The type of metric to create. The current supported types are `counter`, `gauge`, and `historgram`.
+1. `type` (*String*): The type of metric to create. The current supported types are `counter`, `gauge`, and `histogram`.
 2. `name` (*String*): The name of the metric
 3. `help` (*String*): The help message for the metric
 
