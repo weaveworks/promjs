@@ -30,7 +30,7 @@
     "babel-loader": "^8.0.5",
     "babel-plugin-lodash": "^3.3.4",
     "chai": "^4.2.0",
-    "eslint": "^5.14.1",
+    "eslint": "^5.16.0",
     "eslint-config-airbnb-typescript": "^1.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
@@ -38,11 +38,11 @@
     "mocha": "^3.2.0",
     "ts-node": "^8.0.2",
     "typescript": "^3.3.3",
-    "uglifyjs-webpack-plugin": "^2.1.1",
-    "webpack": "^4.29.5",
-    "webpack-cli": "^3.2.3"
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.12"
   }
 }
