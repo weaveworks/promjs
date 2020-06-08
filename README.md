@@ -72,6 +72,9 @@ console.log(registry.metrics());
 ```
 
 #### registry.clear() => self
+Removes all metrics from internal `data` storage. Returns itself to allow for chaining.
+
+#### registry.reset() => self
 Resets all existing metrics to 0. This can be used to reset metrics after reporting to a prometheus aggregator. Returns itself to allow for chaining.
 
 
