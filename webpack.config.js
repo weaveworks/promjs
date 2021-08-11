@@ -1,4 +1,4 @@
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = (env, options) => {
   const LIBRARY_NAME = 'promjs';
@@ -8,7 +8,7 @@ module.exports = (env, options) => {
   let outputFile;
 
   if (options.mode === 'production') {
-    plugins.push(new UglifyJsPlugin());
+    plugins.push(new TerserPlugin());
     outputFile = `${LIBRARY_NAME}.min.js`;
     mode = 'production';
   } else {
