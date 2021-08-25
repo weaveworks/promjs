@@ -38,7 +38,7 @@
     "mocha": "^4.1.0",
     "ts-node": "^8.0.2",
     "typescript": "^3.3.3",
-    "uglifyjs-webpack-plugin": "^2.2.0",
+    "terser-webpack-plugin": "^4.2.3",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   },
