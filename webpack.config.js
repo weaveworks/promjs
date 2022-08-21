@@ -33,7 +33,7 @@ module.exports = (env, options) => {
         loader: 'babel-loader',
         exclude: /(node_modules)/,
         query: {
-          plugins: ['lodash', '@babel/proposal-class-properties', '@babel/proposal-object-rest-spread'],
+          plugins: ['@babel/proposal-class-properties', '@babel/proposal-object-rest-spread'],
           presets: ['@babel/env']
         }
       }]

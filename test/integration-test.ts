@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { each, includes, last } from 'lodash';
 import prom from '../src';
 import { Registry } from '../src/registry';
 
@@ -70,11 +69,12 @@ describe('promjs', () => {
   });
 
   it('reports metrics', () => {
-    each(desired, (d) => {
-      if (!includes(actual, d)) {
+    for (let i = 0; i < desired.length; i += 1) {
+      const d = desired[i];
+      if (!actual.includes(d)) {
         errors.push(`Actual: ${actual}\nExpected: ${d}`);
       }
-    });
+    }
 
     expect(errors).deep.equals([], errors.join('\n'));
   });
@@ -84,10 +84,11 @@ describe('promjs', () => {
 
     // Check that the end of each metric string is a 0
     expect(cleared.length).greaterThan(5);
-    each(cleared, (m) => {
-      if (m && !includes(m, 'TYPE') && !includes(m, 'HELP')) {
-        expect(last(m)).equals('0');
+    for (let i = 0; i < cleared.length; i += 1) {
+      const m = cleared[i];
+      if (m && !m.includes('TYPE') && !m.includes('HELP')) {
+        expect(m.slice(-1)).equals('0');
       }
-    });
+    }
   });
 });
