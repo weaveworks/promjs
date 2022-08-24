@@ -1,8 +1,7 @@
-import { find, isEqual, map, reduce } from 'lodash';
 import { HistogramValue, Labels, Metric, MetricValue } from './types';
 
 function getLabelPairs(metric: Metric<MetricValue>): string {
-  const pairs = map(metric.labels, (v, k) => `${k}="${v}"`);
+  const pairs = Object.entries(metric.labels || {}).map(([k, v]) => `${k}="${v}"`);
   return pairs.length === 0 ? '' : `${pairs.join(',')}`;
 }
 
@@ -21,14 +20,11 @@ export function formatHistogramOrSummary(
     str += `${name}_sum ${metric.value.sum}\n`;
   }
 
-  return reduce(metric.value.entries, (result, count, bucket) => {
+  return Object.entries(metric.value.entries).reduce((result, [bucket, count]) => {
     if (labels.length > 0) {
-      str += `${name}_bucket{${bucketLabel}="${bucket}",${labels}} ${count}\n`;
-    } else {
-      str += `${name}_bucket{${bucketLabel}="${bucket}"} ${count}\n`;
+      return `${result}${name}_bucket{${bucketLabel}="${bucket}",${labels}} ${count}\n`;
     }
-
-    return str;
+    return `${result}${name}_bucket{${bucketLabel}="${bucket}"} ${count}\n`;
   }, str);
 }
 
@@ -40,7 +36,22 @@ export function findExistingMetric<T extends MetricValue>(
   if (!labels) {
     return values[0];
   }
-  return find(values, v => isEqual(v.labels, labels));
+  return values.find((v) => {
+    if (!v.labels) {
+      return false;
+    }
+    if (Object.keys(v.labels || {}).length !== Object.keys(labels).length) {
+      return false;
+    }
+    const entries = Object.entries(labels);
+    for (let i = 0; i < entries.length; i += 1) {
+      const [label, value] = entries[i];
+      if (v.labels[label] !== value) {
+        return false;
+      }
+    }
+    return true;
+  });
 }
 
 export function formatCounterOrGauge(name: string, metric: Metric<MetricValue>): string {
@@ -50,6 +61,6 @@ export function formatCounterOrGauge(name: string, metric: Metric<MetricValue>):
   if (metric.labels == null || Object.keys(metric.labels).length === 0) {
     return `${name}${value}\n`;
   }
-  const pair = map(metric.labels, (v, k) => `${k}="${v}"`);
+  const pair = Object.entries(metric.labels).map(([k, v]) => `${k}="${v}"`);
   return `${name}{${pair.join(',')}}${value}\n`;
 }

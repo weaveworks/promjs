@@ -1,4 +1,3 @@
-import { each, has, reduce, valuesIn } from 'lodash';
 import { Collector } from './collector';
 import { Counter } from './counter';
 import { Gauge } from './gauge';
@@ -52,7 +51,7 @@ export class Registry {
       throw new Error('help must be string or undefined/null');
     }
 
-    if (has(this.data, `${type}.${name}`)) {
+    if (this.data[type][name]) {
       throw new Error(`A metric with the name '${name}' already exists for type '${type}'`);
     }
 
@@ -70,7 +69,7 @@ export class Registry {
   create(
     type: CollectorType,
     name: string,
-    help: string = '',
+    help = '',
     histogramBuckets: number[] = [],
   ): Collector<any> {
     this.validateInput(type, name, help, histogramBuckets);
@@ -98,8 +97,8 @@ export class Registry {
    * @return {string}
    */
   metrics(): string {
-    return reduce(this.data,
-      (output, metrics, type) => output + reduce(metrics, (src, metric, name) => {
+    return Object.entries(this.data).reduce(
+      (out, [type, metrics]) => out + Object.entries(metrics).reduce((src, [name, metric]) => {
         const values = metric.instance.collect();
         let result = src;
         if (metric.help.length > 0) {
@@ -107,7 +106,7 @@ export class Registry {
         }
         result += `# TYPE ${name} ${type}\n`;
         // Each metric can have many labels. Iterate over each and append to the string.
-        result += reduce(values, (str, value) => {
+        result += values.reduce((str: string, value: any) => {
           const formatted = type === 'histogram'
             ? formatHistogramOrSummary(name, value as Metric<HistogramValue>)
             : formatCounterOrGauge(name, value as Metric<CounterValue>);
@@ -115,15 +114,12 @@ export class Registry {
         }, '');
         return result;
       }, ''),
-      '');
+      ''
+    );
   }
 
   reset(): this {
-    each(this.data, (metrics) => {
-      each(metrics, ({ instance }) => {
-        instance.resetAll();
-      });
-    });
+    Object.values(this.data).map(m => Object.values(m).map(({ instance }) => instance.resetAll()));
     return this;
   }
 
@@ -144,8 +140,8 @@ export class Registry {
   get(type: 'histogram', name: string): Histogram | undefined;
 
   get(type: CollectorType, name: string): Collector<any> | undefined {
-    const registryItems = type != null ? [this.data[type]] : valuesIn(this.data);
-    const metric = registryItems.find(v => has(v, name));
+    const registryItems = type != null ? [this.data[type]] : Object.values(this.data);
+    const metric = registryItems.find(v => name in v);
 
     return metric != null ? metric[name].instance : undefined;
   }

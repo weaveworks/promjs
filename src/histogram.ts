@@ -1,5 +1,3 @@
-import { reduce, sum } from 'lodash';
-
 import { Collector } from './collector';
 import { HistogramValue, HistogramValueEntries, Labels } from './types';
 
@@ -17,7 +15,7 @@ function findMinBucketIndex(ary: number[], num: number): number | undefined {
 
 function getInitialValue(buckets: number[]): HistogramValue {
   // Make the skeleton to which values will be saved.
-  const entries = reduce(buckets, (result, b) => {
+  const entries = buckets.reduce((result, b) => {
     result[b.toString()] = 0;
     return result;
   }, { '+Inf': 0 } as HistogramValueEntries);
@@ -60,7 +58,7 @@ export class Histogram extends Collector<HistogramValue> {
       }
     }
 
-    metric.value.sum = sum(metric.value.raw);
+    metric.value.sum = metric.value.raw.reduce((sum, v) => sum + v, 0);
     metric.value.count += 1;
 
     return this;
