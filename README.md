@@ -1,4 +1,4 @@
-# promjs
+# DEPRECATED: promjs
 
 A Prometheus metrics registry implemented in TypeScript
 
