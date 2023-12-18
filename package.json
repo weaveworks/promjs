@@ -11,7 +11,7 @@
     "lint": "eslint --ext .ts src test",
     "test": "mocha --recursive \"test/**/*-test.ts\"",
     "release": "yarn lint && yarn test && yarn version && yarn build && yarn push",
-    "push": "cd lib && npm login && npm publish && git push --set-upstream origin master --follow-tags"
+    "push": "npm login && npm publish && git push --set-upstream origin master --follow-tags"
   },
   "license": "Apache-2.0",
   "devDependencies": {
